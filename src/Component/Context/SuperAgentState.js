@@ -15,22 +15,22 @@ export const SuperAgentProvider = ({ children }) => {
     const [superAgentList, setSuperAgentList] = useState([])
 
     const initialValue = {
-        "AgentCode": "",
-        "FullName": "",
-        "UserName": "",
-        "Password": "",
-        "Address": "",
-        "Image": "",
-        "District": "",
-        "StarGrading": "",
-        "Academic": "",
-        "Professional": "",
-        "WorkExp": "",
-        "ResponseTime": "",
-        "ProductCat": "",
-        "ProductType": "",
-        "Statement": "",
-        "Contact": "",
+        AgentCode: "",
+        FullName: "",
+        UserName: "",
+        Password: "",
+        Address: "",
+        Image: "",
+        District: "",
+        StarGrading: "",
+        Academic: "",
+        Professional: "",
+        WorkExp: "",
+        ResponseTime: "",
+        ProductCat: "",
+        ProductType: "",
+        Statement: "",
+        Contact: "",
     }
     const [formValue, setFormValue] = useState(initialValue)
     const [editSuperAgent, setEditSuperAgent] = useState(false)

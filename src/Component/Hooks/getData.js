@@ -1,5 +1,5 @@
 export const Fetchdata = async (dataToSend) => {
-    if (dataToSend.Type === "POST") {
+    try {
         const response = await fetch(dataToSend.FetchURL, {
             method: "POST",
             headers: {
@@ -8,11 +8,15 @@ export const Fetchdata = async (dataToSend) => {
             },
             body: JSON.stringify(dataToSend),
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
         const cooptive = await response.json();
         return cooptive;
-    } else {
-        const response = await fetch(dataToSend.FetchURL);
-        const cooptive = await response.json();
-        return cooptive;
+    } catch (error) {
+        console.error("Fetch Error:", error);
+        throw error;
     }
 };

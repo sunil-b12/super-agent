@@ -3,11 +3,11 @@ import SuperAgentContext from '../Context/SuperAgentContext';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import { AiFillPlusCircle, AiFillCloseSquare, AiOutlinePlus } from "react-icons/ai";
-import { Fetchdata } from '../Hooks/getData';
 import Button from 'react-bootstrap/Button';
+import { Fetchdata } from '../Hooks/getData';
 
 
-const AddSuperAgent = () => {
+const AddSuperAgent = ({ onHide }) => {
   const { superAgentData,
     loading,
     error,
@@ -20,9 +20,8 @@ const AddSuperAgent = () => {
     isUploaded, setIsUploaded,
     image, setImage, initialValue } = useContext(SuperAgentContext)
 
-
   const handleChange = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
       reader.onload = function (e) {
@@ -35,59 +34,60 @@ const AddSuperAgent = () => {
     setFormValue({ ...formValue, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleAdd = (e) => {
     e.preventDefault();
     setFormError(formValue);
     setIsSubmit(true);
-  };
+  }
 
-  useEffect(() => {
-    if (Object.keys(formError).length === 0 && isSubmit) {
-      const dataForm = {
-        // AuthCode: "r1d3r",
-        // Flag: "i",
-        // AgentCode: formValue.AgentCode,
-        // FullName: formValue.FullName,
-        // UserName: formValue.UserName,
-        // Password: formValue.Password,
-        // Image: image !== null ? image.split(",")[1] : "",
-        // Address: formValue.Address,
-        // District: formValue.District,
-        // StarGrading: formValue.StarGrading,
-        // Academic: formValue.Academic,
-        // Professional: formValue.Professional,
-        // WorkExp: formValue.WorkExp,
-        // ResponseTime: formValue.ResponseTime,
-        // ProductCat: formValue.ProductCat,
-        // ProductType: formValue.ProductType,
-        // Statement: formValue.Statement,
-        // Contact: formValue.Contact,
-        // AllowApp: "Y",
-        // Type: "POST",
-        // FetchURL: `https://testing.esnep.com/happyhomes/api/admin/agent`
-      };
+  if (isSubmit===true) {
+    const dataForm = {
+      AuthCode: "r1d3r",
+      Flag: "i",
+      AgentCode: formValue.AgentCode,
+      FullName: formValue.FullName,
+      UserName: formValue.UserName,
+      Password: formValue.Password,
+      Image: image !== null ? image.split(",")[1] : "",
+      Address: formValue.Address,
+      District: '1',
+      StarGrading: formValue.StarGrading,
+      Academic: formValue.Academic,
+      Professional: formValue.Professional,
+      WorkExp: formValue.WorkExp,
+      ResponseTime: formValue.ResponseTime,
+      ProductCat: formValue.ProductCat,
+      ProductType: formValue.ProductType,
+      Statement: formValue.Statement,
+      Contact: formValue.Contact,
+      AllowApp: "Y",
+      FetchURL: "https://testing.esnep.com/happyhomes/api/admin/agent"
+    };
 
-      Fetchdata(dataForm).then(function (result) {
+    console.log(dataForm);
+    Fetchdata(dataForm)
+      .then((result) => {
         if (result.StatusCode === 200) {
-          toast.success(result.Message, { theme: 'light' });
-          setIsSubmit(false);
-          setFormValue(initialValue);
+          toast.success(result.Message, { theme: "light" });
+          setFormValue({});
           setIsUploaded(false);
-          getSuperAgent(); // Assuming this function fetches updated agent list
+          setIsSubmit(false);
         } else {
-          toast.error(result.Message, { theme: 'light' });
+          toast.error(result.Message, { theme: "light" });
           setIsSubmit(false);
         }
+      })
+      .catch((error) => {
+        console.error('Fetch Error:', error);
+        toast.error('An error occurred while making the API call.', { theme: 'light' });
+        setIsSubmit(false);
       });
-    } else {
-      setIsSubmit(false);
-    }
-  }, [formError]);
+  }
 
-  console.log(formValue)
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleAdd}>
         <div className='grid-column-03'>
           <Form.Group className="mb-3">
             <Form.Label>Agent Code</Form.Label>
@@ -299,7 +299,7 @@ const AddSuperAgent = () => {
           </div>
         </div>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" onClick={handleAdd}>
           Add Agent
         </Button>
       </Form>

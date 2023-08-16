@@ -9,7 +9,6 @@ const SuperAgent = () => {
     const { superAgentData, loading, error } = useContext(SuperAgentContext);
     const [show, setShow] = useState(false);
 
-    console.log(show)
     return (
         <>
             <div style={{ padding: "20px" }} className='container grid'>
@@ -71,7 +70,7 @@ const SuperAgent = () => {
                         </button>
                     </Modal.Header>
                     <Modal.Body>
-                        <AddSuperAgent />
+                        <AddSuperAgent onHide={() => setShow(false)} />
                     </Modal.Body>
                 </Modal>
             </div >
